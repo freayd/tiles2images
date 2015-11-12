@@ -8,8 +8,8 @@ url = 'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png'
 
 list = Magick::ImageList.new
 extension = File.extname(url)
-0.upto(2 ** zoom - 1) do |x|
-  paths = 0.upto(2 ** zoom - 1).map do |y|
+(2 ** zoom).times do |x|
+  paths = (2 ** zoom).times.map do |y|
     path = File.join(__dir__, dir, zoom.to_s, x.to_s, "#{y}#{extension}")
 
     unless File.exist?(path)
