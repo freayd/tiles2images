@@ -15,6 +15,7 @@ extension = File.extname(url)
     unless File.exist?(path)
       FileUtils.makedirs(File.dirname(path))
       uri = URI(url.sub('{z}', zoom.to_s).sub('{x}', x.to_s).sub('{y}', y.to_s))
+      sleep 0.1
       Net::HTTP.start(uri.host, uri.port, use_ssl: uri.port == 443) do |http|
         begin
           File.open(path, 'wb') do |file|
