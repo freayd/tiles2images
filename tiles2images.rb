@@ -1,3 +1,4 @@
+require 'bundler/setup'
 require 'fileutils'
 require 'net/http'
 require 'rmagick'
