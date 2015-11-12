@@ -25,7 +25,7 @@ extension = File.extname(url)
               end
             end
           end
-        rescue
+        rescue Exception
           File.delete(path)
           raise
         end
