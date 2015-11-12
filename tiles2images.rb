@@ -1,5 +1,6 @@
 require 'fileutils'
 require 'net/http'
+require 'rmagick'
 require 'uri'
 
 zoom = 2
@@ -39,3 +40,10 @@ end
 path = File.join(__dir__, dir, zoom.to_s)
 image = list.append(false)
 image.write("#{path}#{extension}") unless File.exists?("#{path}#{extension}")
+
+unless File.exist?("#{path}.tiff")
+  image.write("#{path}.tmp.tiff")
+  gdal_options = "-of GTiff -a_srs EPSG:3857 -a_ullr -20037508.34 20037508.34 20037508.34 -20037508.34"
+  system("gdal_translate #{gdal_options} '#{path}.tmp.tiff' '#{path}.tiff'")
+  File.delete("#{path}.tmp.tiff")
+end
