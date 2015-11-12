@@ -16,12 +16,17 @@ extension = File.extname(url)
       FileUtils.makedirs(File.dirname(path))
       uri = URI(url.sub('{z}', zoom.to_s).sub('{x}', x.to_s).sub('{y}', y.to_s))
       Net::HTTP.start(uri.host, uri.port, use_ssl: uri.port == 443) do |http|
-        File.open(path, 'wb') do |file|
-          http.request_get(uri.request_uri) do |response|
-            response.read_body do |segment|
-              file.write(segment)
+        begin
+          File.open(path, 'wb') do |file|
+            http.request_get(uri.request_uri) do |response|
+              response.read_body do |segment|
+                file.write(segment)
+              end
             end
           end
+        rescue
+          File.delete(path)
+          raise
         end
       end
     end
